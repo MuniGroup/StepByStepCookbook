@@ -1,0 +1,13 @@
+CREATE TABLE COUNTER (step_id int(10) NOT NULL, seconds int(10) NOT NULL, PRIMARY KEY (step_id));
+CREATE TABLE NORMAL_STEP (step_id int(10) NOT NULL, text text, image text, PRIMARY KEY (step_id));
+CREATE TABLE THREAD (id int(10) NOT NULL AUTO_INCREMENT, recipe_id int(10) NOT NULL, color varchar(255), position int(10), PRIMARY KEY (id));
+CREATE TABLE ASSIGNED_STEP (step_id int(10) NOT NULL, thread_id int(10) NOT NULL, position int(10), PRIMARY KEY (step_id, thread_id));
+CREATE TABLE STEP (id int(10) NOT NULL AUTO_INCREMENT, author int(10) NOT NULL, PRIMARY KEY (id));
+CREATE TABLE CATEGORIZED_RECIPE (category_id int(10) NOT NULL, recipe_id int(10) NOT NULL, PRIMARY KEY (category_id, recipe_id));
+CREATE TABLE DOWNLOADED_RECIPE (recipe_id int(10) NOT NULL, user_id int(10) NOT NULL, download_time timestamp NOT NULL, PRIMARY KEY (recipe_id, user_id));
+CREATE TABLE RECIPE_CATEGORY (id int(10) NOT NULL AUTO_INCREMENT, name varchar(255) NOT NULL, category_parent int(10) NOT NULL, PRIMARY KEY (id));
+CREATE TABLE RECIPE_RATING (user_id int(10) NOT NULL, recipe_id int(10) NOT NULL, recipe_quality int(10), result_quality int(10), difficulty int(10), in_words text, PRIMARY KEY (user_id, recipe_id));
+CREATE TABLE ASSIGNED_INGREDIENT (ingredient_id int(10) NOT NULL, recipe_id int(10) NOT NULL, amout int(10) NOT NULL, unit varchar(255), position int(10), PRIMARY KEY (ingredient_id, recipe_id));
+CREATE TABLE `USER` (id int(10) NOT NULL AUTO_INCREMENT, name varchar(255) NOT NULL, email varchar(255) NOT NULL, password varchar(255) NOT NULL, PRIMARY KEY (id));
+CREATE TABLE INGREDIENT (id int(10) NOT NULL AUTO_INCREMENT, name varchar(255) NOT NULL, PRIMARY KEY (id));
+CREATE TABLE RECIPE (id int(10) NOT NULL AUTO_INCREMENT, name varchar(255) NOT NULL, author int(10) NOT NULL, PRIMARY KEY (id));

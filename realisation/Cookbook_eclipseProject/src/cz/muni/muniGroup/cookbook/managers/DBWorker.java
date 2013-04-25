@@ -26,11 +26,11 @@ import cz.muni.muniGroup.cookbook.exceptions.ConnectivityException;
 public class DBWorker {
 
 	// secure password which is needed to access to PHP scripts
-	private static final String INDEX_OF_CHECK = "password";
+	private static final String INDEX_OF_CHECK = "secretKey";
 	private static final String VALUE_OF_CHECK = "dcc621vfrgVDv56";
 	
 	
-	public static final String URL = "http://cookbook.greld.cz/";
+	public static final String URL = "http://cookbook.greld.cz/android/";
 	
 	/**
 	 * 
@@ -49,7 +49,7 @@ public class DBWorker {
 		try {
 			HttpClient httpclient = new DefaultHttpClient();
 			HttpPost httppost = new HttpPost(URL + script);
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
 			HttpResponse response = httpclient.execute(httppost);
 			HttpEntity entity = response.getEntity();
 			is = entity.getContent();

@@ -28,8 +28,10 @@ public interface UserManager {
 	/**
 	 * 
 	 * @param id
+	 * @throws ConnectivityException 
+	 * @throws CookbookException 
 	 */
-	User getUserById(int id);
+	User getUserById(int id) throws ConnectivityException, CookbookException;
 
 	/**
 	 * 

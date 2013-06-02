@@ -52,17 +52,45 @@ public class UserManagerImpl implements UserManager{
 
 	@Override
 	public void delete(int id) {
+		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void update(User user) {
+		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public User getUserById(int id) {
-		throw new UnsupportedOperationException();
+	public User getUserById(int id) throws ConnectivityException, CookbookException {
+		if (id <= 0)
+			throw new IllegalArgumentException("Id is not positive number");
+
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("id", String.valueOf(id)));
+
+		JSONArray jArray = DBWorker.dbQuery(nameValuePairs, "getUserById.php");
+		if (jArray == null)
+			throw new NullPointerException("Prazdne JSON pole.");
+
+		try {
+			if (jArray.getJSONObject(0).getBoolean("empty") == true)
+				return null;
+		} catch (JSONException e1) {}
+
+		JSONObject json_data;
+		User user;
+		try {
+			json_data = jArray.getJSONObject(0);
+			user = new User();
+			user.setId(json_data.getInt("id"));
+			user.setEmail(json_data.getString("email"));
+			user.setName(json_data.getString("name"));
+		} catch (JSONException e) {
+			throw new CookbookException("Chyba pøi parsovaní JSON formátu návratové hodnoty.", e);
+		} 
+		return user;
 	}
 
 	@Override

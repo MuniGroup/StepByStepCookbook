@@ -16,6 +16,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import cz.muni.muniGroup.cookbook.activities.MyApplication;
 import cz.muni.muniGroup.cookbook.exceptions.ConnectivityException;
 
 /**
@@ -30,7 +31,7 @@ public class DBWorker {
 	private static final String VALUE_OF_CHECK = "dcc621vfrgVDv56";
 	
 	
-	public static final String URL = "http://cookbook.greld.cz/android/";
+	public static final String URL = MyApplication.URL+"android/";
 	
 	/**
 	 * 

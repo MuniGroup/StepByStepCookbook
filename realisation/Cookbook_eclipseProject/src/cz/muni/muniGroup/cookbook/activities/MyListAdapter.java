@@ -6,23 +6,36 @@ import java.util.ArrayList;
 
 import cz.muni.muniGroup.cookbook.R;
 import cz.muni.muniGroup.cookbook.entities.Recipe;
+import cz.muni.muniGroup.cookbook.managers.DBWorker;
+import cz.muni.muniGroup.cookbook.managers.ImageDownloader;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.ImageView.ScaleType;
 
 public class MyListAdapter extends ArrayAdapter<Recipe>
 {
 
+	private static final String TAG = "MyListAdapter";
 	private ArrayList<Recipe> array;
 	private LayoutInflater inflater;	
 	private Context context;
 	private Activity activity;
+    private static final String DIR = "recipeIcons";
+    private static final String FILE = "recipeIcon";
+    private Runnable runnableDownloadImages;
+    private int [] alreadyDrawn;
 
 	public MyListAdapter(Activity a,int textViewResourceId,ArrayList<Recipe> recipes){
 		super(a,textViewResourceId,recipes);
@@ -30,7 +43,7 @@ public class MyListAdapter extends ArrayAdapter<Recipe>
 		this.activity=a;	
 		this.context=activity.getApplicationContext();
 		inflater=LayoutInflater.from(context);
-		
+		alreadyDrawn = new int [recipes.size()];
 	}
 	
 
@@ -47,6 +60,7 @@ public class MyListAdapter extends ArrayAdapter<Recipe>
 				}
 				add(item);			
 			}
+			alreadyDrawn = new int [items.size()];
 			notifyDataSetChanged();
 		}
 		else{
@@ -97,6 +111,8 @@ public class MyListAdapter extends ArrayAdapter<Recipe>
 			holder = new ViewHolder();
 			holder.name = (TextView) convertView.findViewById(R.id.text1);
 			holder.author = (TextView) convertView.findViewById(R.id.text2);
+			holder.rating = (RatingBar) convertView.findViewById(R.id.ratingBar1);
+			holder.icon = (ImageView) convertView.findViewById(R.id.icon);
 			
 			convertView.setTag(holder);
 		}
@@ -106,14 +122,64 @@ public class MyListAdapter extends ArrayAdapter<Recipe>
 		}
 		
 				
-		Recipe recipe=new Recipe();
-		recipe=getItem(position);
+		final Recipe recipe = getItem(position);
 		holder.name.setText(recipe.getName());
 		holder.author.setText(recipe.getAuthor().getName());
+		
+		setImage(holder, recipe, position);
 		
 		return convertView;
 	}
 	
+
+	private void setImage(ViewHolder holder, final Recipe recipe, int position) {
+		holder.icon.setImageResource(R.drawable.recipe_icon_default);
+        
+        String fname = null;
+        String path = null;
+        if ((recipe.getIcon() == null) && 
+        		(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)))
+        {
+        	path = context.getExternalFilesDir(null).getAbsolutePath() + "/" + DIR;
+        	fname = FILE + recipe.getId() + ".jpg";
+        	System.err.println("pametova karta je k dispozici. Cesta: " + path + "/" + fname);
+        	Bitmap bm = BitmapFactory.decodeFile(path + "/" + fname);
+        	recipe.setIcon(bm);
+        	if (bm!=null)
+            	System.err.println("naloudováno z karty");
+        		
+        }
+        if (recipe.getIcon() == null) {
+        	if (alreadyDrawn[position] != 1) {
+            	alreadyDrawn[position] = 1;
+            	System.err.println("stahuju.");
+            	final String fnameFinal = fname;
+            	final String pathFinal = path;
+            	runnableDownloadImages = new Runnable(){
+                    public void run() {
+                    	Bitmap bm = ImageDownloader.DownloadImage(ImageDownloader.URL + DIR + "/" + FILE + recipe.getId() + ".jpg");
+                    	Log.d(TAG, "loaduju iconu z "+ImageDownloader.URL + DIR + "/" + FILE + recipe.getId() + ".jpg");
+                    	if (bm != null){
+                    		Log.d(TAG, "icona naloadovana");
+                    		recipe.setIcon(bm);
+                        	ImageDownloader.saveImage(bm, pathFinal, fnameFinal);
+                        	activity.runOnUiThread(updateAdapter);
+                    	}
+                    }
+                };
+                Thread thread =  new Thread(null, runnableDownloadImages, "ImageOnBackground");
+                thread.start();
+        	} else System.err.println("uz se stahuje.");
+        }
+        else
+        {
+        	System.err.println("jiz ulozeno");
+        	holder.icon.setScaleType(ScaleType.FIT_CENTER);
+        	holder.icon.setImageBitmap(recipe.getIcon());
+        }
+		
+	}
+
 
 	@Override
 	public int getViewTypeCount()
@@ -124,7 +190,15 @@ public class MyListAdapter extends ArrayAdapter<Recipe>
 	static class ViewHolder
 	{
 		TextView name;
-		TextView author;	
+		TextView author;
+		ImageView icon;	
+		RatingBar rating;
 	}
+	
+	private Runnable updateAdapter = new Runnable() {
+        public void run() {
+            notifyDataSetChanged();
+        }
+    };
 }
 

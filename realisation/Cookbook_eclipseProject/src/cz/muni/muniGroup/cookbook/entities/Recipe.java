@@ -2,12 +2,15 @@ package cz.muni.muniGroup.cookbook.entities;
 
 import java.util.Set;
 
+import android.graphics.Bitmap;
+
 public class Recipe {
 
 	private Set<RecipeCategory> category;
 	private User author;
 	private int id;
 	private String name;
+	private Bitmap icon;
 	
 	public Set<RecipeCategory> getCategory() {
 		return category;
@@ -32,6 +35,14 @@ public class Recipe {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+		
+	public Bitmap getIcon() {
+		return icon;
+	}
+	public void setIcon(Bitmap icon) {
+		this.icon = icon;
 	}
 	@Override
 	public int hashCode() {

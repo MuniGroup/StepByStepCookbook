@@ -10,6 +10,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import cz.muni.muniGroup.cookbook.activities.MyApplication;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
@@ -22,7 +24,8 @@ import android.util.Log;
  */
 
 public class ImageDownloader {
-	
+
+	public static final String URL = MyApplication.URL;
 
 	/**
 	 * save image to SD card if any is available

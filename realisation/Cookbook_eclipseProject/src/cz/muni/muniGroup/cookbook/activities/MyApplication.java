@@ -10,6 +10,7 @@ import android.os.Handler;
  */
 public class MyApplication extends Application 
 {     
+	public static final String URL = "http://cookbook.greld.cz/";
 	
 	private int currentRecipeTab;
 	private int currentCategoryId;

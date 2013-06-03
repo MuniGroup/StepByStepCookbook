@@ -19,6 +19,8 @@ public class MyLoader extends AsyncTaskLoader<ArrayList<Recipe>>
 	// reference to the Loaders data
 	private ArrayList<Recipe> mRecipes = null;
 	private int categoryId;
+	private int order;
+	private int idLoaderu;
 
 	public MyLoader(Context context, Bundle args)
 	{
@@ -28,8 +30,13 @@ public class MyLoader extends AsyncTaskLoader<ArrayList<Recipe>>
 		// The superclass constructor will store a reference to the Application
 		// Context instead, and can be retrieved with a call to getContext().
 		super(context);
+		order = args.getInt("order");
 		categoryId = args.getInt("categoryId");
+		idLoaderu = args.getInt("idLoaderu");
+		Log.i(TAG + idLoaderu, "new loader: categoryId "+categoryId+" order "+ order + " idloaderu " + args.getInt("idLoaderu"));
 	}
+	
+	
 	
     /**
      * @return true if idCategory was changed
@@ -37,7 +44,7 @@ public class MyLoader extends AsyncTaskLoader<ArrayList<Recipe>>
 	public boolean setCategoryId(int categoryId) {
 		if (this.categoryId != categoryId){
 			this.categoryId = categoryId;
-			Log.i(TAG, "categoryId "+categoryId);
+			Log.i(TAG + idLoaderu, "categoryId "+categoryId);
 			mRecipes = null;
 			forceLoad();
 			return true;
@@ -59,16 +66,16 @@ public class MyLoader extends AsyncTaskLoader<ArrayList<Recipe>>
 	public ArrayList<Recipe> loadInBackground()
 	{
 		
-		Log.i(TAG, "load in background");
+		Log.i(TAG + idLoaderu, "load in background, categoryId: "+categoryId+", order: "+order);
 		RecipeManagerImpl recipeManagerImpl = new RecipeManagerImpl();
 		try {
-			mRecipes = (ArrayList<Recipe>) recipeManagerImpl.getRecipes(categoryId, 0, 10);
+			mRecipes = (ArrayList<Recipe>) recipeManagerImpl.getRecipes(categoryId, order, 0, 10);
 			return mRecipes;
 		} catch (ConnectivityException e) {
-			Log.i(TAG, "ConnectivityException: "+e.getMessage());
+			Log.i(TAG + idLoaderu, "ConnectivityException: "+e.getMessage());
 			return new ArrayList<Recipe>();
 		} catch (CookbookException e) {
-			Log.i(TAG, "CookbookException: "+e.getMessage());
+			Log.i(TAG + idLoaderu, "CookbookException: "+e.getMessage());
 			return new ArrayList<Recipe>();
 		}
 	}
@@ -88,7 +95,7 @@ public class MyLoader extends AsyncTaskLoader<ArrayList<Recipe>>
 	{
 		if (isReset())
 		{
-			Log.i(TAG,"[Loader was reset!]");
+			Log.i(TAG + idLoaderu,"[Loader was reset!]");
 
 			// The Loader has been reset; ignore the result and invalidate the data.
 			// This can happen when the Loader is reset while an asynchronous query
@@ -108,7 +115,7 @@ public class MyLoader extends AsyncTaskLoader<ArrayList<Recipe>>
 
 		if (isStarted())
 		{
-			Log.d(TAG,"[Delivering results to the LoaderManager]");
+			Log.d(TAG + idLoaderu,"[Delivering results to the LoaderManager]");
 			// If the Loader is in a started state, have the superclass deliver the
 			// results to the client.
 			super.deliverResult(recipes);
@@ -117,7 +124,7 @@ public class MyLoader extends AsyncTaskLoader<ArrayList<Recipe>>
 		// Invalidate the old data as we don't need it any more.
 		if (oldRecipes != null && oldRecipes != recipes)
 		{
-			Log.i(TAG,"[Releasing any old data associated with this Loader!]");
+			Log.i(TAG + idLoaderu,"[Releasing any old data associated with this Loader!]");
 			onReleaseResources(oldRecipes);
 		}
 	}
@@ -129,12 +136,12 @@ public class MyLoader extends AsyncTaskLoader<ArrayList<Recipe>>
 	@Override
 	protected void onStartLoading()
 	{
-		Log.i(TAG,"[onStartLoading]");
+		Log.i(TAG + idLoaderu,"[onStartLoading]");
 
 		if (mRecipes != null)
 		{
 			// Deliver any previously loaded data immediately.
-			Log.i(TAG,"[Delivering previously loaded data to the client...]");
+			Log.i(TAG + idLoaderu,"[Delivering previously loaded data to the client...]");
 			deliverResult(mRecipes);
 		}
 
@@ -146,13 +153,13 @@ public class MyLoader extends AsyncTaskLoader<ArrayList<Recipe>>
 			// onContentChanged() on the Loader, which will cause the next call to
 			// takeContentChanged() to return true. If this is ever the case (or if
 			// the current data is null), we force a new load.
-			Log.i(TAG,"[A content change has been detected... so force load!]");
+			Log.i(TAG + idLoaderu,"[A content change has been detected... so force load!]");
 			forceLoad();
 		}
 		else if (mRecipes == null)
 		{
 			// If the current data is null... then we should make it non-null! :)
-			Log.i(TAG,"[The current data is data is null... so force load!]");
+			Log.i(TAG + idLoaderu,"[The current data is data is null... so force load!]");
 			forceLoad();
 		}
 	}
@@ -174,7 +181,7 @@ public class MyLoader extends AsyncTaskLoader<ArrayList<Recipe>>
 	@Override
 	protected void onReset()
 	{
-		Log.i(TAG,"[onReset]");
+		Log.i(TAG + idLoaderu,"[onReset]");
 
 		// Ensure the loader is stopped.
 		onStopLoading();
@@ -189,7 +196,7 @@ public class MyLoader extends AsyncTaskLoader<ArrayList<Recipe>>
 		// Attempt to cancel the current asynchronous load.
 		super.onCanceled(recipes);
 
-		Log.i(TAG,"[onCanceled]");
+		Log.i(TAG + idLoaderu,"[onCanceled]");
 
 		// The load has been canceled, so we should release the resources associated with 'mAdverts'.
 		onReleaseResources(recipes);
@@ -200,7 +207,7 @@ public class MyLoader extends AsyncTaskLoader<ArrayList<Recipe>>
 	{
 		super.forceLoad();
 
-		Log.i(TAG,"[forceLoad]");
+		Log.i(TAG + idLoaderu,"[forceLoad]");
 	}
 
 	/**

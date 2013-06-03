@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import cz.muni.muniGroup.cookbook.R;
 import cz.muni.muniGroup.cookbook.entities.Recipe;
-import cz.muni.muniGroup.cookbook.managers.DBWorker;
 import cz.muni.muniGroup.cookbook.managers.ImageDownloader;
 
 import android.app.Activity;
@@ -125,6 +124,7 @@ public class MyListAdapter extends ArrayAdapter<Recipe>
 		final Recipe recipe = getItem(position);
 		holder.name.setText(recipe.getName());
 		holder.author.setText(recipe.getAuthor().getName());
+		holder.rating.setRating(recipe.getRating());
 		
 		setImage(holder, recipe, position);
 		

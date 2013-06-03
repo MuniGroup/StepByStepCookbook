@@ -76,7 +76,6 @@ public class MainActivity extends SherlockFragmentActivity {
 	    actionBar.setDisplayShowTitleEnabled(false);
 	    
 
-	    tabNames.add(getResources().getString(R.string.all));
 	    tabNames.add(getResources().getString(R.string.newest));
 	    tabNames.add(getResources().getString(R.string.best));
 	    tabNames.add(getResources().getString(R.string.mostDownloaded));
@@ -107,7 +106,7 @@ public class MainActivity extends SherlockFragmentActivity {
 
 	    @Override
 	    public Fragment getItem(int position) {
-            return ListRecipesFragment.newInstance(position);
+            return ListRecipesFragment.newInstance(position+1);
 	    }
 
 	    @Override

@@ -19,7 +19,7 @@ public class ListRecipesFragment extends ListFragment implements LoaderCallbacks
 	private static final String TAG = "ListRecipesFragment";
     private int categoryId;
     private int currentTab;
-    private static final int RECIPES_LOADER_ID=0;
+    private static final int RECIPES_LOADER_ID=10;
 	private MyListAdapter listAdapter;
 	private MyApplication app;
 	private MyLoader myLoader;
@@ -45,29 +45,16 @@ public class ListRecipesFragment extends ListFragment implements LoaderCallbacks
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
-		app = (MyApplication) getActivity().getApplicationContext();
-		categoryId = app.getCurrentCategoryId();
+		
 		
 		// Start out with a progress indicator.
         setListShown(false);
-        
-        // Prepare the loader.  Either re-connect with an existing one,
-        // or start a new one.
-        myLoader=(MyLoader) getLoaderManager().initLoader(RECIPES_LOADER_ID, null, this);
         
         listAdapter = new MyListAdapter(getActivity(),android.R.id.list, new ArrayList<Recipe>());
         setListAdapter(listAdapter);
 		
 	}
-	
-	@Override
-	public void onStart() {
 		
-		
-		super.onStart();
-	}
-	
-	
 
 	@Override
 	public void onResume() {
@@ -89,15 +76,28 @@ public class ListRecipesFragment extends ListFragment implements LoaderCallbacks
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		app = (MyApplication) getActivity().getApplicationContext();
+		categoryId = app.getCurrentCategoryId();
 		currentTab = getArguments().getInt("tab");
+		
+
+        // Prepare the loader.  Either re-connect with an existing one,
+        // or start a new one.
+        Log.i(TAG, "categoryId "+categoryId+" order "+currentTab);
+        Bundle arg1=new Bundle();
+		arg1.putInt("categoryId", categoryId);
+		arg1.putInt("order", currentTab);
+        myLoader=(MyLoader) getLoaderManager().initLoader(RECIPES_LOADER_ID+currentTab, arg1, this);
 	}
 
 	@Override
 	public Loader<ArrayList<Recipe>> onCreateLoader(int arg0, Bundle arg1) {
-		Log.i("loader","oncreate loader");
-		arg1=new Bundle();
-		arg1.putInt("categoryId", categoryId);
-		return new MyLoader(getActivity(), arg1);
+		Log.i("loader","oncreate loader "+arg0);
+		Bundle arg=new Bundle();
+		arg.putInt("categoryId", arg1.getInt("categoryId"));
+		arg.putInt("order", arg1.getInt("order"));
+		arg.putInt("idLoaderu", arg0);
+		return new MyLoader(getActivity(), arg);
 	}
 
 	@Override

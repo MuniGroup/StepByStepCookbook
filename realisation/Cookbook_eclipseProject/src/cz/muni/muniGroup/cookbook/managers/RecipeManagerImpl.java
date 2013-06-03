@@ -9,6 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import cz.muni.muniGroup.cookbook.entities.Recipe;
 import cz.muni.muniGroup.cookbook.entities.RecipeCategory;
 import cz.muni.muniGroup.cookbook.entities.User;
@@ -47,12 +49,13 @@ public class RecipeManagerImpl implements RecipeManager{
 	}
 
 	@Override
-	public List<Recipe> getRecipes(int categoryId, int limitFrom, int limit) throws ConnectivityException, CookbookException {
+	public List<Recipe> getRecipes(int categoryId, int order, int limitFrom, int limit) throws ConnectivityException, CookbookException {
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		nameValuePairs.add(new BasicNameValuePair("categoryId", String.valueOf(categoryId)));
+		nameValuePairs.add(new BasicNameValuePair("order", String.valueOf(order)));
 		nameValuePairs.add(new BasicNameValuePair("limitFrom", String.valueOf(limitFrom)));
 		nameValuePairs.add(new BasicNameValuePair("limit", String.valueOf(limit)));
-
+		Log.i("getRecipes","BasicNameValuePair order "+order);
 		JSONArray jArray = DBWorker.dbQuery(nameValuePairs, "getRecipes.php");
 		if (jArray == null)
 			throw new NullPointerException("Prazdne JSON pole.");
@@ -77,6 +80,7 @@ public class RecipeManagerImpl implements RecipeManager{
 				recipe = new Recipe();
 				recipe.setId(json_data.getInt("id"));
 				recipe.setName(json_data.getString("name"));
+				recipe.setRating((float)json_data.getDouble("rating"));
 				user = userManager.getUserById(json_data.getInt("author"));
 				recipe.setAuthor(user);
 				recipes.add(recipe);

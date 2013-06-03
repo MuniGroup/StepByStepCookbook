@@ -41,7 +41,7 @@ public interface RecipeManager {
 	 * @throws ConnectivityException 
 	 * @throws CookbookException 
 	 */
-	List<Recipe> getRecipes(int categoryId, int limitFrom, int limit) throws ConnectivityException, CookbookException;
+	List<Recipe> getRecipes(int categoryId, int order, int limitFrom, int limit) throws ConnectivityException, CookbookException;
 
 	/**
 	 * 

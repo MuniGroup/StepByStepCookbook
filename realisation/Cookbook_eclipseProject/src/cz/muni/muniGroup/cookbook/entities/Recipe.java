@@ -11,6 +11,7 @@ public class Recipe {
 	private int id;
 	private String name;
 	private Bitmap icon;
+	private float rating;
 	
 	public Set<RecipeCategory> getCategory() {
 		return category;
@@ -38,6 +39,12 @@ public class Recipe {
 	}
 	
 		
+	public float getRating() {
+		return rating;
+	}
+	public void setRating(float rating) {
+		this.rating = rating;
+	}
 	public Bitmap getIcon() {
 		return icon;
 	}

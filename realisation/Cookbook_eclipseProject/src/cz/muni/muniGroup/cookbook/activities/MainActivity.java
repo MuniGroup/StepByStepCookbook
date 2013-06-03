@@ -38,16 +38,6 @@ public class MainActivity extends SherlockFragmentActivity {
 	private static List<String> tabNames = new ArrayList<String>();
     private MyApplication app;
 
-	public static final int TAB_ALL = 0;
-	public static final int TAB_NEWEST = 1;
-	public static final int TAB_BEST = 2;
-	public static final int TAB_MOST_DOWNLOADED = 3;
-	
-
-	public static final int MY_SECTION_ITEM_ID = 1;
-	public static final int MENU_ITEMSID_BASE = 2000;
-	public static final int MENU_CATEGORIES_GROUP_ID = 1;
-	
 	
 	private ViewPager mViewPager;
 	private MyPagerAdapter mPagerAdapter;
@@ -99,11 +89,13 @@ public class MainActivity extends SherlockFragmentActivity {
 		
 	}
 	
-	
+	/**
+	 * @return RecipeCategory represents all categories (no filter)
+	 */
 	public static RecipeCategory getRecipeCategoryAll(Context context) {
 		RecipeCategory recipeCategory = new RecipeCategory();
 		recipeCategory.setId(0);
-		recipeCategory.setName(context.getResources().getString(R.string.all));
+		recipeCategory.setName(context.getResources().getString(R.string.app_name));
 		return recipeCategory;
 	}
 

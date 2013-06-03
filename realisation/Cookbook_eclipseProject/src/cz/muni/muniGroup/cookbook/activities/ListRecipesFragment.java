@@ -27,6 +27,8 @@ public class ListRecipesFragment extends ListFragment implements LoaderCallbacks
 	/**
      * Create a new instance of CountingFragment, providing "num"
      * as an argument.
+     * 
+     * @return new instance of ListRecipesFragment with tab argument
      */
     static ListRecipesFragment newInstance(int num) {
     	ListRecipesFragment f = new ListRecipesFragment();

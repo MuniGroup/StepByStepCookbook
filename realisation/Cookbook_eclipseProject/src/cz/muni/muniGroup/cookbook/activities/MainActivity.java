@@ -9,6 +9,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
+import com.actionbarsherlock.widget.SearchView;
 
 import cz.muni.muniGroup.cookbook.R;
 import cz.muni.muniGroup.cookbook.entities.RecipeCategory;
@@ -33,7 +34,7 @@ import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 
-public class MainActivity extends SherlockFragmentActivity {
+public class MainActivity extends SherlockFragmentActivity implements SearchView.OnQueryTextListener {
 	
 	private SpinnerAdapter mSpinnerAdapter;
 	private OnNavigationListener mOnNavigationListener;
@@ -44,6 +45,40 @@ public class MainActivity extends SherlockFragmentActivity {
 	
 	private ViewPager mViewPager;
 	private MyPagerAdapter mPagerAdapter;
+	
+	
+	//Create actionbar items Search and Overflow
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	
+        //Create the search view
+        SearchView searchView = new SearchView(getSupportActionBar().getThemedContext());
+        searchView.setQueryHint("Vyhledej recept!");
+        searchView.setOnQueryTextListener(this);
+        
+    	menu.add("Search")
+    		.setIcon(R.drawable.ic_action_search)
+    		.setActionView(searchView)
+        	.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        
+        menu.add("Overflow")
+        	.setIcon(R.drawable.ic_action_overflow)
+        	.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+        return true;
+    }
+    
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        Toast.makeText(this, "Hledal jsi: " + query, Toast.LENGTH_LONG).show();
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
+    
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

@@ -131,7 +131,7 @@ public class MainActivity extends SherlockFragmentActivity {
 		
 	}
 	
-
+/*
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getSupportMenuInflater().inflate(R.menu.recipes_list, menu);
@@ -141,16 +141,14 @@ public class MainActivity extends SherlockFragmentActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
-		switch (item.getItemId()) {
-			case R.id.refresh:
+		if (item.getItemId() == R.id.refresh) {
 				Toast.makeText(this, "Aktualizace nefunguje :-D", Toast.LENGTH_SHORT).show();
 				mPagerAdapter.notifyDataSetChanged();
-				break;
 		}
 		
 		return super.onOptionsItemSelected(item);
 	}
-	
+*/	
 
 	/**
 	 * Only for test purpose

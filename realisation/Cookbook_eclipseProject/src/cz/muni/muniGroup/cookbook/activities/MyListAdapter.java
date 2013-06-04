@@ -4,19 +4,24 @@ package cz.muni.muniGroup.cookbook.activities;
 
 import java.util.ArrayList;
 
+import cz.muni.muniGroup.cookbook.R;
+import cz.muni.muniGroup.cookbook.entities.Recipe;
+import cz.muni.muniGroup.cookbook.managers.ImageDownloader;
+
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import cz.muni.muniGroup.cookbook.R;
-import cz.muni.muniGroup.cookbook.entities.Recipe;
+import android.widget.ImageView.ScaleType;
 
 public class MyListAdapter extends ArrayAdapter<Recipe>
 {
@@ -26,6 +31,8 @@ public class MyListAdapter extends ArrayAdapter<Recipe>
 	private LayoutInflater inflater;	
 	private Context context;
 	private Activity activity;
+    private static final String DIR = "recipeIcons";
+    private static final String FILE = "recipeIcon";
     private Runnable runnableDownloadImages;
     private int [] alreadyDrawn;
 
@@ -127,17 +134,47 @@ public class MyListAdapter extends ArrayAdapter<Recipe>
 
 	private void setImage(ViewHolder holder, final Recipe recipe, int position) {
 		holder.icon.setImageResource(R.drawable.recipe_icon_default);
-    	holder.icon.setScaleType(ScaleType.FIT_CENTER);
-    	if (recipe.getIcon() != null) 
-    		Log.i(TAG, "recipe.getIcon() != null");
-        if (recipe.getIcon() == null && alreadyDrawn[position] != 1) 
+        
+        String fname = null;
+        String path = null;
+        if ((recipe.getIcon() == null) && 
+        		(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)))
         {
-        	alreadyDrawn[position] = 1;
-        	String iconUrl = Recipe.ICON_DIR + "/" + Recipe.ICON_FILE + recipe.getId() + ".jpg";
-    		Log.d(TAG, "start stazeni icony z "+iconUrl);
-        	new GetImageTask(context, holder.icon, iconUrl, recipe).execute();
+        	path = context.getExternalFilesDir(null).getAbsolutePath() + "/" + DIR;
+        	fname = FILE + recipe.getId() + ".jpg";
+        	System.err.println("pametova karta je k dispozici. Cesta: " + path + "/" + fname);
+        	Bitmap bm = BitmapFactory.decodeFile(path + "/" + fname);
+        	recipe.setIcon(bm);
+        	if (bm!=null)
+            	System.err.println("naloudováno z karty");
+        		
         }
-        if (recipe.getIcon() != null){
+        if (recipe.getIcon() == null) {
+        	if (alreadyDrawn[position] != 1) {
+            	alreadyDrawn[position] = 1;
+            	System.err.println("stahuju.");
+            	final String fnameFinal = fname;
+            	final String pathFinal = path;
+            	runnableDownloadImages = new Runnable(){
+                    public void run() {
+                    	Bitmap bm = ImageDownloader.DownloadImage(ImageDownloader.URL + DIR + "/" + FILE + recipe.getId() + ".jpg");
+                    	Log.d(TAG, "loaduju iconu z "+ImageDownloader.URL + DIR + "/" + FILE + recipe.getId() + ".jpg");
+                    	if (bm != null){
+                    		Log.d(TAG, "icona naloadovana");
+                    		recipe.setIcon(bm);
+                        	ImageDownloader.saveImage(bm, pathFinal, fnameFinal);
+                        	activity.runOnUiThread(updateAdapter);
+                    	}
+                    }
+                };
+                Thread thread =  new Thread(null, runnableDownloadImages, "ImageOnBackground");
+                thread.start();
+        	} else System.err.println("uz se stahuje.");
+        }
+        else
+        {
+        	System.err.println("jiz ulozeno");
+        	holder.icon.setScaleType(ScaleType.FIT_CENTER);
         	holder.icon.setImageBitmap(recipe.getIcon());
         }
 		
@@ -158,5 +195,10 @@ public class MyListAdapter extends ArrayAdapter<Recipe>
 		RatingBar rating;
 	}
 	
+	private Runnable updateAdapter = new Runnable() {
+        public void run() {
+            notifyDataSetChanged();
+        }
+    };
 }
 

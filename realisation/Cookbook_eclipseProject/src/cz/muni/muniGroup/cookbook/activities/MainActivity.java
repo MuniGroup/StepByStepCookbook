@@ -7,6 +7,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
 
@@ -24,10 +25,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.MenuInflater;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
@@ -78,8 +75,7 @@ public class MainActivity extends SherlockFragmentActivity {
 		
 	    actionBar.setDisplayShowTitleEnabled(false);
 	    
-        /* Promíchání zpusobi nekompatibilitu s PHP scriptem... v pripadì potreby je nutno vyresit
-         * */
+
 	    tabNames.add(getResources().getString(R.string.newest));
 	    tabNames.add(getResources().getString(R.string.best));
 	    tabNames.add(getResources().getString(R.string.mostDownloaded));
@@ -126,30 +122,11 @@ public class MainActivity extends SherlockFragmentActivity {
 		public int getItemPosition(Object item) {
             return POSITION_NONE;
 	    }
-
 		
 		
 	}
 	
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.recipes_list, menu);
-		return true;
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		switch (item.getItemId()) {
-			case R.id.refresh:
-				Toast.makeText(this, "Aktualizace nefunguje :-D", Toast.LENGTH_SHORT).show();
-				mPagerAdapter.notifyDataSetChanged();
-				break;
-		}
-		
-		return super.onOptionsItemSelected(item);
-	}
 	
 
 	/**

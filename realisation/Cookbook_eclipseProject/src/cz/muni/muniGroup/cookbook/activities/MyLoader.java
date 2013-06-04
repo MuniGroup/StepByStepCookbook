@@ -45,7 +45,7 @@ public class MyLoader extends AsyncTaskLoader<ArrayList<Recipe>>
 		if (this.categoryId != categoryId){
 			this.categoryId = categoryId;
 			Log.i(TAG + idLoaderu, "categoryId "+categoryId);
-			mRecipes = null;
+			onReleaseResources(mRecipes);
 			forceLoad();
 			return true;
 		}

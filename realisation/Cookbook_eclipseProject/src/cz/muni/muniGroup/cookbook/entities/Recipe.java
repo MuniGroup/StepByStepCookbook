@@ -4,8 +4,12 @@ import java.util.Set;
 
 import android.graphics.Bitmap;
 
-public class Recipe {
+public class Recipe implements WithIcon{
 
+	// cesta k iconam: ImageDownloader.URL+ICON_DIR/ICON_FILE+id.jpg
+    public static final String ICON_DIR = "recipeIcons";
+    public static final String ICON_FILE = "recipeIcon";
+    
 	private Set<RecipeCategory> category;
 	private User author;
 	private int id;

@@ -26,6 +26,7 @@ import android.util.Log;
 public class ImageDownloader {
 
 	public static final String URL = MyApplication.URL;
+	private static final String TAG = "ImageDownloader";
 
 	/**
 	 * save image to SD card if any is available
@@ -40,7 +41,7 @@ public class ImageDownloader {
     	File file = new File(path);
     	     if (!file.exists()){
     	    	 if (!file.mkdirs()){
-    	    		 System.err.println("Nelze vytvorit dir");
+    	    		 Log.e(TAG, "Nelze vytvorit dir, path: "+path);
     	    		 return false;
     	    	 } 
     	     }
@@ -50,17 +51,17 @@ public class ImageDownloader {
 		try {
 			os = new FileOutputStream(file);
 		} catch (FileNotFoundException e) {
-			System.err.println("FileNotFoundException: " + e.getMessage());
+			Log.e(TAG, "FileNotFoundException: " + e.getMessage());
 			return false;
 		}
         try {
             bm.compress(Bitmap.CompressFormat.JPEG, 100, os);
             os.close();
 		} catch (IOException e) {
-			System.err.println("IOException: " + e.getMessage());
+			Log.e(TAG, "IOException: " + e.getMessage());
 			return false;
 		}
-        System.err.println("saved.");
+        Log.i(TAG, "image saved.");
         return true;
     }
 
@@ -97,9 +98,9 @@ public class ImageDownloader {
 			stream.close();
 
 		} catch (MalformedURLException e) {
-			Log.e("ImageDownloader", "malformed url: " + url);
+			Log.e(TAG, "malformed url: " + url);
 		} catch (IOException e) {
-			Log.e("ImageDownloader", "An error has occurred downloading the image: " + url);
+			Log.e(TAG, "An error has occurred downloading the image: " + url);
 		}
 
 		// return the fetched thumb (or null, if error)

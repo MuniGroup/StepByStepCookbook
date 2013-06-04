@@ -5,11 +5,16 @@ import java.util.ArrayList;
 import com.actionbarsherlock.view.Window;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 import cz.muni.muniGroup.cookbook.entities.Recipe;
 
@@ -46,6 +51,9 @@ public class ListRecipesFragment extends ListFragment implements LoaderCallbacks
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 		
+		// naèítání dalšich receptu pri scrollovaní
+		// this.getListView().setOnScrollListener(new EndlessScrollListener());
+		
 		
 		// Start out with a progress indicator.
         setListShown(false);
@@ -56,6 +64,20 @@ public class ListRecipesFragment extends ListFragment implements LoaderCallbacks
 	}
 		
 
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		Recipe recipe = listAdapter.getItem(position);
+		
+		Intent intent = new Intent();
+    	intent.putExtra("cz.muni.muniGroup.cookbook.recipeId", recipe.getId());
+    	intent.putExtra("cz.muni.muniGroup.cookbook.recipeName", recipe.getName());
+    	intent.putExtra("cz.muni.muniGroup.cookbook.recipeAuthorName", recipe.getAuthor().getName());
+    	
+        intent.setClass(getActivity(), RecipeDetailActivity.class);
+        startActivity(intent);
+	}
+	
 	@Override
 	public void onResume() {
 		categoryId = app.getCurrentCategoryId();
@@ -103,7 +125,7 @@ public class ListRecipesFragment extends ListFragment implements LoaderCallbacks
 	@Override
 	public void onLoadFinished(Loader<ArrayList<Recipe>> loader, ArrayList<Recipe> list){
 			for(Recipe recipe:list){
-				Log.i("loaderfragment","item:"+recipe.getName()+","+recipe.getAuthor());
+				Log.i("loaderfragment","item:"+recipe.getName()+","+recipe.getAuthor().getName());
 			}
 			final ArrayList<Recipe> recipesList=list;
 			listAdapter.setData(recipesList);

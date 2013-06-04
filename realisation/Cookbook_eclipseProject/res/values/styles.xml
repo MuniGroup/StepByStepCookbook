@@ -23,6 +23,66 @@
         <item name="android:minHeight">20dip</item>
         <item name="android:maxHeight">20dip</item>
     </style>
+    
+        <style name="Theme.Cookbookred" parent="@style/Theme.Sherlock.Light.DarkActionBar">
+        <item name="actionBarItemBackground">@drawable/selectable_background_cookbookred</item>
+        <item name="popupMenuStyle">@style/PopupMenu.Cookbookred</item>
+        <item name="dropDownListViewStyle">@style/DropDownListView.Cookbookred</item>
+        <item name="actionBarTabStyle">@style/ActionBarTabStyle.Cookbookred</item>
+        <item name="actionDropDownStyle">@style/DropDownNav.Cookbookred</item>
+        <item name="actionBarStyle">@style/ActionBar.Solid.Cookbookred</item>
+        <item name="actionModeBackground">@drawable/cab_background_top_cookbookred</item>
+        <item name="actionModeSplitBackground">@drawable/cab_background_bottom_cookbookred</item>
+        <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Cookbookred</item>
+
+                <!-- Light.DarkActionBar specific -->
+        <item name="actionBarWidgetTheme">@style/Theme.Cookbookred.Widget</item>
+
+    </style>
+
+    <style name="ActionBar.Solid.Cookbookred" parent="@style/Widget.Sherlock.Light.ActionBar.Solid.Inverse">
+        <item name="background">@drawable/ab_solid_cookbookred</item>
+        <item name="backgroundStacked">@drawable/ab_stacked_solid_cookbookred</item>
+        <item name="backgroundSplit">@drawable/ab_bottom_solid_cookbookred</item>
+        <item name="progressBarStyle">@style/ProgressBar.Cookbookred</item>
+    </style>
+
+    <style name="ActionBar.Transparent.Cookbookred" parent="@style/Widget.Sherlock.ActionBar">
+        <item name="background">@drawable/ab_transparent_cookbookred</item>
+        <item name="progressBarStyle">@style/ProgressBar.Cookbookred</item>
+    </style>
+	
+    <style name="PopupMenu.Cookbookred" parent="@style/Widget.Sherlock.ListPopupWindow">	
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_cookbookred</item>	
+    </style>
+	
+    <style name="DropDownListView.Cookbookred" parent="@style/Widget.Sherlock.ListView.DropDown">
+        <item name="android:listSelector">@drawable/selectable_background_cookbookred</item>
+    </style>
+
+    <style name="ActionBarTabStyle.Cookbookred" parent="@style/Widget.Sherlock.ActionBar.TabView">
+        <item name="android:background">@drawable/tab_indicator_ab_cookbookred</item>
+    </style>
+	
+    <style name="DropDownNav.Cookbookred" parent="@style/Widget.Sherlock.Spinner.DropDown.ActionBar">
+        <item name="android:background">@drawable/spinner_background_ab_cookbookred</item>
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_cookbookred</item>
+        <item name="android:dropDownSelector">@drawable/selectable_background_cookbookred</item>
+    </style>
+    
+    <style name="ProgressBar.Cookbookred" parent="@style/Widget.Sherlock.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progress_horizontal_cookbookred</item>
+    </style>
+    
+    <style name="ActionButton.CloseMode.Cookbookred" parent="@style/Widget.Sherlock.ActionButton.CloseMode">
+        <item name="android:background">@drawable/btn_cab_done_cookbookred</item>
+    </style>
+    
+    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
+    <style name="Theme.Cookbookred.Widget" parent="@style/Theme.Sherlock">
+        <item name="popupMenuStyle">@style/PopupMenu.Cookbookred</item>
+        <item name="dropDownListViewStyle">@style/DropDownListView.Cookbookred</item>
+    </style>
 
 
 </resources>

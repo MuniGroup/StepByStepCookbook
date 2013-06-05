@@ -1,7 +1,7 @@
 package cz.muni.muniGroup.cookbook.activities;
 
 import android.app.Application;
-import android.os.Handler;
+import android.util.Log;
 
 /**
  * Global data to access from all activities
@@ -11,9 +11,11 @@ import android.os.Handler;
 public class MyApplication extends Application 
 {     
 	public static final String URL = "http://cookbook.greld.cz/";
+	private static final String TAG = "MyApplication";
 	
 	private int currentRecipeTab;
 	private int currentCategoryId;
+	private int refreshTag;
 	
 	
 	public int getCurrentRecipeTab() {
@@ -27,6 +29,13 @@ public class MyApplication extends Application
 	}
 	public void setCurrentCategoryId(int currentCategoryId) {
 		this.currentCategoryId = currentCategoryId;
+	}
+	public void incrementRefreshTag() {
+		Log.i(TAG, "incrementRefreshTag");
+		this.refreshTag++;
+	}
+	public int getRefreshTag(){
+		return refreshTag;
 	}
 	
 	

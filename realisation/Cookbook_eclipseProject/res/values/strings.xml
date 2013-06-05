@@ -18,6 +18,7 @@
     <string name="mySection">Moje sekce</string>
     
     
-    <string name="connectionProblem">Naskytla se chyba v připojení k Internetu.</string>
-
+    <string name="connectionProblem">Litujeme, nepodařilo se připojit k Internetu.</string>
+	<string name="refresh">Aktualizovat</string>
+	
 </resources>

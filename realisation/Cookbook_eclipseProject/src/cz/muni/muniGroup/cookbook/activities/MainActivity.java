@@ -30,7 +30,8 @@ import cz.muni.muniGroup.cookbook.managers.UserManager;
 import cz.muni.muniGroup.cookbook.managers.UserManagerImpl;
 
 
-public class MainActivity extends SherlockFragmentActivity implements SearchView.OnQueryTextListener {
+public class MainActivity extends SherlockFragmentActivity 
+	implements SearchView.OnQueryTextListener, ListRecipesFragment.OnRefreshListener {
 	
 	private SpinnerAdapter mSpinnerAdapter;
 	private OnNavigationListener mOnNavigationListener;
@@ -219,6 +220,13 @@ public class MainActivity extends SherlockFragmentActivity implements SearchView
 		};
 		Thread threadLoading = new Thread(null, loading, "loading");
         threadLoading.start();
+	}
+
+	@Override
+	public void onRefresh() {
+		new GetCategoriesTask(MainActivity.this, categories).execute();
+		app.incrementRefreshTag();
+		mPagerAdapter.notifyDataSetChanged();
 	}
 
 

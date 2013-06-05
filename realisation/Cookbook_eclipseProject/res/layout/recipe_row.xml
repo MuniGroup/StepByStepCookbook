@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="140dp"
+    android:layout_height="105dp"
+    android:background="@color/list_background" >
 
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="80dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="140dp"
+        android:layout_height="105dp"
         android:src="@drawable/recipe_icon_default" />
 
     <LinearLayout
+        android:layout_width="140dp"
+        android:layout_height="105dp"
+        android:gravity="bottom"
+        android:orientation="vertical" >
+        
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:orientation="vertical" >
+        android:layout_gravity="bottom"
+        android:background="@color/recipe_grid_title_bg"
+        android:orientation="vertical"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:paddingBottom="2dp" >
         
     <TextView
         android:id="@+id/text1"
@@ -25,8 +32,8 @@
         android:layout_height="wrap_content"
         android:lines="1"
         android:ellipsize="marquee"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textSize="14sp"
+        android:text="Vepřové na hrášku" />
 
     <TextView
         android:id="@+id/text2"
@@ -34,7 +41,9 @@
         android:layout_height="wrap_content"
         android:lines="1"
         android:ellipsize="marquee"
-        android:textSize="16sp" />
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:text="Franta Dobrota" />
 
     <RatingBar
         android:id="@+id/ratingBar1"
@@ -47,7 +56,7 @@
         android:rating="3.5" />
 
     </LinearLayout>
-
-
-
 </LinearLayout>
+
+
+</RelativeLayout>

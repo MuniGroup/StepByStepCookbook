@@ -3,12 +3,21 @@ package cz.muni.muniGroup.cookbook.activities;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.widget.ArrayAdapter;
+import android.widget.SpinnerAdapter;
+import android.widget.Toast;
+
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.SubMenu;
 import com.actionbarsherlock.widget.SearchView;
 
 import cz.muni.muniGroup.cookbook.R;
@@ -18,28 +27,14 @@ import cz.muni.muniGroup.cookbook.exceptions.ConnectivityException;
 import cz.muni.muniGroup.cookbook.exceptions.CookbookException;
 import cz.muni.muniGroup.cookbook.managers.UserManager;
 import cz.muni.muniGroup.cookbook.managers.UserManagerImpl;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.MenuInflater;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.SpinnerAdapter;
-import android.widget.Toast;
 
 
 public class MainActivity extends SherlockFragmentActivity implements SearchView.OnQueryTextListener {
 	
 	private SpinnerAdapter mSpinnerAdapter;
 	private OnNavigationListener mOnNavigationListener;
-	private static List<RecipeCategory> categories = new ArrayList<RecipeCategory>();
-	private static List<String> tabNames = new ArrayList<String>();
+	private static List<RecipeCategory> categories;
+	private static List<String> tabNames;
     private MyApplication app;
 
 	
@@ -79,7 +74,6 @@ public class MainActivity extends SherlockFragmentActivity implements SearchView
         return false;
     }
     
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -103,7 +97,7 @@ public class MainActivity extends SherlockFragmentActivity implements SearchView
 			  }
 			};
 		
-		
+		categories = new ArrayList<RecipeCategory>();
 	    categories.add(getRecipeCategoryAll(this));
 		mSpinnerAdapter = new ArrayAdapter<RecipeCategory>(MainActivity.this, R.layout.main_spinner_item, categories);
 	
@@ -115,6 +109,7 @@ public class MainActivity extends SherlockFragmentActivity implements SearchView
 	    
         /* Promíchání zpusobi nekompatibilitu s PHP scriptem... v pripadì potreby je nutno vyresit
          * */
+	    tabNames = new ArrayList<String>();
 	    tabNames.add(getResources().getString(R.string.newest));
 	    tabNames.add(getResources().getString(R.string.best));
 	    tabNames.add(getResources().getString(R.string.mostDownloaded));
@@ -122,7 +117,6 @@ public class MainActivity extends SherlockFragmentActivity implements SearchView
         mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mPagerAdapter);
-        
         
 		
 	}
@@ -166,24 +160,7 @@ public class MainActivity extends SherlockFragmentActivity implements SearchView
 		
 	}
 	
-/*
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.recipes_list, menu);
-		return true;
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
 
-		if (item.getItemId() == R.id.refresh) {
-				Toast.makeText(this, "Aktualizace nefunguje :-D", Toast.LENGTH_SHORT).show();
-				mPagerAdapter.notifyDataSetChanged();
-		}
-		
-		return super.onOptionsItemSelected(item);
-	}
-*/	
 
 	/**
 	 * Only for test purpose

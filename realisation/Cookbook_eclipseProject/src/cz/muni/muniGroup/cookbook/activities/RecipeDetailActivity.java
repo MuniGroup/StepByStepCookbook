@@ -23,7 +23,7 @@ public class RecipeDetailActivity extends SherlockFragmentActivity {
 				return;
 			}
 			
-			getActionBar().setTitle(R.string.recipe);
+			getSupportActionBar().setTitle(R.string.recipe);
 			
 			recipeId = extras.getInt("cz.muni.muniGroup.cookbook.recipeId");
 			recipeName = extras.getString("cz.muni.muniGroup.cookbook.recipeName");

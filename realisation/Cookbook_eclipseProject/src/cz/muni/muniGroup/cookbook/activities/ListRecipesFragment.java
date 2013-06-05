@@ -5,20 +5,27 @@ import java.util.ArrayList;
 import com.actionbarsherlock.view.Window;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import cz.muni.muniGroup.cookbook.R;
 import cz.muni.muniGroup.cookbook.entities.Recipe;
 
-public class ListRecipesFragment extends ListFragment implements LoaderCallbacks<ArrayList<Recipe>> {
+public class ListRecipesFragment extends Fragment implements LoaderCallbacks<ArrayList<Recipe>> {
 	
 
 	private static final String TAG = "ListRecipesFragment";
@@ -28,6 +35,8 @@ public class ListRecipesFragment extends ListFragment implements LoaderCallbacks
 	private MyListAdapter listAdapter;
 	private MyApplication app;
 	private MyLoader myLoader;
+	private GridView gridView;
+	private ProgressBar progressBar;
 	
 	/**
      * Create a new instance of CountingFragment, providing "num"
@@ -50,45 +59,53 @@ public class ListRecipesFragment extends ListFragment implements LoaderCallbacks
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
-		
-		// naèítání dalšich receptu pri scrollovaní
-		// this.getListView().setOnScrollListener(new EndlessScrollListener());
-		
-		
-		// Start out with a progress indicator.
-        setListShown(false);
-        
-        listAdapter = new MyListAdapter(getActivity(),android.R.id.list, new ArrayList<Recipe>());
-        setListAdapter(listAdapter);
-		
-	}
-		
 
-	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
-		Recipe recipe = listAdapter.getItem(position);
-		
-		Intent intent = new Intent();
-    	intent.putExtra("cz.muni.muniGroup.cookbook.recipeId", recipe.getId());
-    	intent.putExtra("cz.muni.muniGroup.cookbook.recipeName", recipe.getName());
-    	intent.putExtra("cz.muni.muniGroup.cookbook.recipeAuthorName", recipe.getAuthor().getName());
-    	
-        intent.setClass(getActivity(), RecipeDetailActivity.class);
-        startActivity(intent);
 	}
+	
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+    	View view = inflater.inflate(R.layout.recipe_grid,container,false);
+    	gridView = (GridView) view.findViewById(R.id.gridview);
+    	progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+    	
+    	listAdapter = new MyListAdapter(getActivity(),R.id.gridview, new ArrayList<Recipe>());
+    	gridView.setAdapter(listAdapter);
+    	
+    	gridView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long arg3) {
+				Recipe recipe = listAdapter.getItem(position);
+				
+				Intent intent = new Intent();
+		    	intent.putExtra("cz.muni.muniGroup.cookbook.recipeId", recipe.getId());
+		    	intent.putExtra("cz.muni.muniGroup.cookbook.recipeName", recipe.getName());
+		    	intent.putExtra("cz.muni.muniGroup.cookbook.recipeAuthorName", recipe.getAuthor().getName());
+		    	
+		        intent.setClass(getActivity(), RecipeDetailActivity.class);
+		        startActivity(intent);
+				
+			}
+		});    	
+    	return view;
+    }
+
 	
 	@Override
 	public void onResume() {
 		categoryId = app.getCurrentCategoryId();
 		
 		Log.i("ListRecipesFragment", "onResume: category "+categoryId+" tab "+currentTab);
-		setEmptyText("No data in category "+categoryId+" tab "+currentTab);
+		TextView emptyTextView = new TextView(getActivity());
+		emptyTextView.setText("No data in category "+categoryId+" tab "+currentTab);
+		gridView.setEmptyView(emptyTextView);
 		
 		boolean wasChanged = myLoader.setCategoryId(app.getCurrentCategoryId());
 		if (wasChanged){
 			listAdapter.setData(null);
-			setListShown(false);
+			showLoadingScreen();
 			Log.i(TAG, "wasChanged");
 		}
 		Log.i(TAG, "setCategoryId "+app.getCurrentCategoryId());
@@ -102,6 +119,13 @@ public class ListRecipesFragment extends ListFragment implements LoaderCallbacks
 		categoryId = app.getCurrentCategoryId();
 		currentTab = getArguments().getInt("tab");
 		
+		
+
+		// naèítání dalšich receptu pri scrollovaní
+		// this.getListView().setOnScrollListener(new EndlessScrollListener());
+			
+        
+        //gridView.setBackgroundColor(getResources().getColor(R.color.list_background));
 
         // Prepare the loader.  Either re-connect with an existing one,
         // or start a new one.
@@ -110,6 +134,15 @@ public class ListRecipesFragment extends ListFragment implements LoaderCallbacks
 		arg1.putInt("categoryId", categoryId);
 		arg1.putInt("order", currentTab);
         myLoader=(MyLoader) getLoaderManager().initLoader(RECIPES_LOADER_ID+currentTab, arg1, this);
+	}
+
+	private void hideLoadingScreen() {
+		progressBar.setVisibility(View.GONE);
+		gridView.setVisibility(View.VISIBLE);
+	}
+	private void showLoadingScreen() {
+		gridView.setVisibility(View.GONE);
+		progressBar.setVisibility(View.VISIBLE);
 	}
 
 	@Override
@@ -132,10 +165,10 @@ public class ListRecipesFragment extends ListFragment implements LoaderCallbacks
 	        // The list should now be shown.
 	        if (isResumed()) {
 	        	Log.i("loaderfrag","set list shown");
-	            setListShown(true);
+	        	hideLoadingScreen();
 	        } else {
 	        	Log.i("loaderfrag","set list shown no animation");
-	            setListShownNoAnimation(true);
+	        	hideLoadingScreen();
 	        }
 	}
 

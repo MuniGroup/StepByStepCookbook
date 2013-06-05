@@ -17,14 +17,13 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
     
-
     <style name="starRatingBar" parent="@android:style/Widget.RatingBar">
-        <item name="android:progressDrawable">@drawable/ratingstars</item>
-        <item name="android:minHeight">20dip</item>
-        <item name="android:maxHeight">20dip</item>
+        <item name="android:progressDrawable">@drawable/rating_caps</item>
+        <item name="android:minHeight">13dip</item>
+        <item name="android:maxHeight">13dip</item>
     </style>
     
-        <style name="Theme.Cookbookred" parent="@style/Theme.Sherlock.Light.DarkActionBar">
+    <style name="Theme.Cookbookred" parent="@style/Theme.Sherlock.Light.DarkActionBar">
         <item name="actionBarItemBackground">@drawable/selectable_background_cookbookred</item>
         <item name="popupMenuStyle">@style/PopupMenu.Cookbookred</item>
         <item name="dropDownListViewStyle">@style/DropDownListView.Cookbookred</item>
@@ -37,7 +36,6 @@
 
                 <!-- Light.DarkActionBar specific -->
         <item name="actionBarWidgetTheme">@style/Theme.Cookbookred.Widget</item>
-
     </style>
 
     <style name="ActionBar.Solid.Cookbookred" parent="@style/Widget.Sherlock.Light.ActionBar.Solid.Inverse">

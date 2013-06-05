@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
- <color name="pressed_cookbookred">#CC0000</color>
- <color name="cb_red">#CC0000</color>    
+ <color name="pressed_cookbookred">#CCCC0000</color>
+ <color name="cb_red">#CC0000</color> 
+ <color name="transparent">#00000000</color>   
     
  <color name="white">#FFFFFF</color>
  <color name="yellow">#FFFF00</color>

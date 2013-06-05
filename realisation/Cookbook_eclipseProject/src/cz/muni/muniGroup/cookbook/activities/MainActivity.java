@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
@@ -65,7 +66,9 @@ public class MainActivity extends SherlockFragmentActivity implements SearchView
     
     @Override
     public boolean onQueryTextSubmit(String query) {
-        Toast.makeText(this, "Hledal jsi: " + query, Toast.LENGTH_LONG).show();
+        Toast toast = Toast.makeText(this, "Hledal jsi: " + query, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 150);
+        toast.show();
         return true;
     }
 

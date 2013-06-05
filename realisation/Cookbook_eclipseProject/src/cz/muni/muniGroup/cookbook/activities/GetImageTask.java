@@ -38,7 +38,8 @@ public class GetImageTask extends AsyncTask<Integer, Void, Bitmap>
         Bitmap bitmap = null;
         
 		// je pametova karta k dispozici?
-		if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+        boolean haveCard = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+		if (haveCard)
 	    {
 			// už je na kartì? 
 			cardPath = context.getExternalFilesDir(null).getAbsolutePath() + "/" + path;
@@ -48,7 +49,7 @@ public class GetImageTask extends AsyncTask<Integer, Void, Bitmap>
 		if (bitmap == null){
         	bitmap = ImageDownloader.DownloadImage(ImageDownloader.URL + path);
 		}
-		if (bitmap != null){
+		if (bitmap != null && haveCard){
 			String imageName = cardPath.substring(cardPath.lastIndexOf("/")+1);
 			String dir = cardPath.substring(0, cardPath.lastIndexOf("/")-1);
         	ImageDownloader.saveImage(bitmap, dir, imageName);

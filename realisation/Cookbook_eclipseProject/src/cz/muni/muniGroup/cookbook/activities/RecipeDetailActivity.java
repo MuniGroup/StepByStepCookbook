@@ -1,6 +1,7 @@
 package cz.muni.muniGroup.cookbook.activities;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.MenuItem;
 
 import cz.muni.muniGroup.cookbook.R;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ public class RecipeDetailActivity extends SherlockFragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.recipe_detail);
+		
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		if (savedInstanceState == null) {
 
@@ -40,4 +43,16 @@ public class RecipeDetailActivity extends SherlockFragmentActivity {
 		
 				
 	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	     int itemId = item.getItemId();
+	     	     
+	     switch (itemId) {
+	         case android.R.id.home:
+	        	 finish();
+	         default:
+	             break;
+	     }
+	     return true;
+	 }
 }

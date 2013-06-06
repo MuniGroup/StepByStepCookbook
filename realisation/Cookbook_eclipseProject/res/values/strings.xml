@@ -7,8 +7,8 @@
     <string name="categories">Kategorie</string>
     
     
-    <string name="ingredients">Suroviny</string>
-    <string name="downloadButton">Stáhni!</string>
+    <string name="ingredients">brambory, kuřecí maso, cibule</string>
+    <string name="downloadButton">Vařit!</string>
     <string name="recipe">Recept</string>
     
     <string name="all">Vše</string>
@@ -18,7 +18,12 @@
     <string name="mySection">Moje sekce</string>
     
     
-    <string name="connectionProblem">Litujeme, nepodařilo se připojit k Internetu.</string>
-	<string name="refresh">Aktualizovat</string>
+    <string name="connectionProblem">Naskytla se chyba v připojení k Internetu.</string>
+    <string name="refresh">Aktualizovat</string>
+    
+    
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus fringilla erat in fringilla viverra. Sed eget mi et velit scelerisque hendrerit. Vivamus quis nisi velit. Sed vitae diam at nulla tincidunt mattis eget vitae risus. Etiam elementum mauris et enim ultrices semper. In adipiscing ac ante vitae auctor. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vestibulum porttitor sagittis ante sed ultrices</string>
 	
+	<string name="label_ingredients">SUROVINY</string>
+	<string name="label_detail">POPIS</string>
 </resources>

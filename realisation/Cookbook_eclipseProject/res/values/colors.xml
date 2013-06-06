@@ -3,7 +3,8 @@
  <color name="pressed_cookbookred">#CCCC0000</color>
  <color name="cb_red">#CC0000</color> 
  <color name="transparent">#00000000</color>   
- <color name="light_gray">#DADADA</color>  
+ <color name="light_gray">#DADADA</color>
+ <color name="detail_background">#F6F6F6</color>     
     
  <color name="white">#FFFFFF</color>
  <color name="yellow">#FFFF00</color>

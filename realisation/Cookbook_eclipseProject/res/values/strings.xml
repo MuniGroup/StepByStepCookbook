@@ -6,8 +6,8 @@
     
     <string name="categories">Kategorie</string>
     
-    
-    <string name="ingredients">brambory, kuřecí maso, cibule</string>
+    <string name="ingredientsUnit">10 kg</string>
+    <string name="ingredients">domaci brambory</string>
     <string name="downloadButton">Vařit!</string>
     <string name="recipe">Recept</string>
     

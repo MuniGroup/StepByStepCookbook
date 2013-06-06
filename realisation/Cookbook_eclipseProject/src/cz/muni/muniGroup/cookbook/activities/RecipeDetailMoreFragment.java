@@ -48,8 +48,8 @@ public class RecipeDetailMoreFragment extends Fragment {
     	
     	ProgressBar progressBarRecipeIngredients = (ProgressBar) getView().findViewById(R.id.progressBarRecipeIngredients);
     	TextView ingr = (TextView) getView().findViewById(R.id.recipeIngredients);
-    	
-    	new GetIngredientsTask(getActivity(), ingr, progressBarRecipeIngredients, recipeId).execute();
+    	TextView units = (TextView) getView().findViewById(R.id.recipeIngredientsUnits);
+    	new GetIngredientsTask(getActivity(), ingr,units, progressBarRecipeIngredients, recipeId).execute();
     	
     	
     }

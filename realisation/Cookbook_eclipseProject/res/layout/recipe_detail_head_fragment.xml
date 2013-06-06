@@ -58,12 +58,12 @@
 		    android:background="@color/white"
 		    android:maxHeight="26dp"
 		    android:minHeight="26dp"
+		    android:paddingLeft="8dp"
+		    android:paddingRight="8dp"
 		    android:text="@string/downloadButton"
 		    android:textColor="@color/cb_red"
 		    android:textSize="14sp"
-		    android:textStyle="bold"
-		    android:paddingLeft="8dp"
-		    android:paddingRight="8dp" />
+		    android:textStyle="bold" />
 
 	</LinearLayout>	
 	

@@ -39,8 +39,9 @@ public class MyListAdapter extends ArrayAdapter<Recipe>
 	}
 	
 
-	public void setData(ArrayList<Recipe> items){		
+	public void setData(ArrayList<Recipe> items){	
 		
+		ArrayList<Recipe> oldArray = array;
 		if(array==null){
 			array=new ArrayList<Recipe>();
 		}
@@ -49,8 +50,16 @@ public class MyListAdapter extends ArrayAdapter<Recipe>
 			for(Recipe item:items){
 				if(item==null){
 					Log.i("adapter","item is null");
-				}
-				add(item);			
+				} else {
+					// zapamatuji si již nalezené ikony
+					if (oldArray != null){
+						int index = oldArray.indexOf(item);
+						if (index != -1){
+							item.setIcon(oldArray.get(index).getIcon());
+						}
+					}
+					add(item);
+				}			
 			}
 			alreadyDrawn = new int [items.size()];
 			notifyDataSetChanged();
@@ -135,7 +144,7 @@ public class MyListAdapter extends ArrayAdapter<Recipe>
         	alreadyDrawn[position] = 1;
         	String iconUrl = Recipe.ICON_DIR + "/" + Recipe.ICON_FILE + recipe.getId() + ".jpg";
     		Log.d(TAG, "start stazeni icony z "+iconUrl);
-        	new GetImageTask(context, holder.icon, iconUrl, recipe).execute();
+        	new GetImageTask(context, holder.icon, iconUrl, recipe, 3).execute();
         }
         if (recipe.getIcon() != null){
         	holder.icon.setImageBitmap(recipe.getIcon());

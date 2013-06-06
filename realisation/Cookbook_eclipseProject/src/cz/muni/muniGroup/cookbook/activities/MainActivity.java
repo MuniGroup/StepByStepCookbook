@@ -61,6 +61,7 @@ public class MainActivity extends SherlockFragmentActivity
         menu.add("Overflow")
         	.setIcon(R.drawable.ic_action_overflow)
         	.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        
 
         return true;
     }

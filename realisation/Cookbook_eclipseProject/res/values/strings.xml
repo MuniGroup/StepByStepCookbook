@@ -21,6 +21,8 @@
     <string name="connectionProblem">Naskytla se chyba v připojení k Internetu.</string>
     <string name="refresh">Aktualizovat</string>
     
+    <string name="noRecipes">Nebyl nalezen žádný recept.</string>
+    
     
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus fringilla erat in fringilla viverra. Sed eget mi et velit scelerisque hendrerit. Vivamus quis nisi velit. Sed vitae diam at nulla tincidunt mattis eget vitae risus. Etiam elementum mauris et enim ultrices semper. In adipiscing ac ante vitae auctor. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vestibulum porttitor sagittis ante sed ultrices</string>
 	

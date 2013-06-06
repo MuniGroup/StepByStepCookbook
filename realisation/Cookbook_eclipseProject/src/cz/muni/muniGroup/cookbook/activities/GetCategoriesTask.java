@@ -53,7 +53,7 @@ public class GetCategoriesTask extends AsyncTask<Integer, Void, ArrayList<Recipe
 	protected void onPostExecute(ArrayList<RecipeCategory> result)
 	{
 		if (result == null){
-			Toast.makeText(context, R.string.connectionProblem, Toast.LENGTH_SHORT).show();
+			//Toast.makeText(context, R.string.connectionProblem, Toast.LENGTH_SHORT).show();
 		} else {
 			categories.clear();
 			categories.add(MainActivity.getRecipeCategoryAll(context));

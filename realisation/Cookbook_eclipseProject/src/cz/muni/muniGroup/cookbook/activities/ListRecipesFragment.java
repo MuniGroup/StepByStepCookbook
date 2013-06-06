@@ -42,6 +42,7 @@ public class ListRecipesFragment extends Fragment implements LoaderCallbacks<Arr
 	// jaka verze je zobrazena? potrebuju refresh?
 	private int refreshTag = 0;
 	OnRefreshListener mCallback;
+	private LinearLayout emptyLayout;
 	
 	/**
      * Create a new instance of CountingFragment, providing "num"
@@ -80,21 +81,12 @@ public class ListRecipesFragment extends Fragment implements LoaderCallbacks<Arr
     	gridView = (GridView) view.findViewById(R.id.gridview);
     	progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
     	connectionProblemLayout = (LinearLayout) view.findViewById(R.id.connectionProblem);
-    	
-    	
+    	emptyLayout = (LinearLayout) view.findViewById(R.id.empty);
+
     	if (!isNetworkAvailable()) {
-    		showConnecttionProblemScreen();
-    		Button refreshButton = (Button) connectionProblemLayout.findViewById(R.id.refreshButton);
-    		refreshButton.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					mCallback.onRefresh();
-				}
-			});
-    		return view; 
-        }
-    	
+    		showConnectionProblemScreen();
+    		return view;
+        } 
     	
     	listAdapter = new MyListAdapter(getActivity(),R.id.gridview, new ArrayList<Recipe>());
     	gridView.setAdapter(listAdapter);
@@ -117,8 +109,6 @@ public class ListRecipesFragment extends Fragment implements LoaderCallbacks<Arr
 			}
 		});    	
     	
-    	
-    	
 		
 		// naèítání dalšich receptu pri scrollovaní
 		// this.getListView().setOnScrollListener(new EndlessScrollListener());
@@ -137,23 +127,29 @@ public class ListRecipesFragment extends Fragment implements LoaderCallbacks<Arr
 	
 	@Override
 	public void onResume() {
+		Log.i(TAG, "onResume");
 		categoryId = app.getCurrentCategoryId();
-		
-		Log.i("ListRecipesFragment", "onResume: category "+categoryId+" tab "+currentTab);
-		TextView emptyTextView = new TextView(getActivity());
-		emptyTextView.setText("No data in category "+categoryId+" tab "+currentTab);
-		gridView.setEmptyView(emptyTextView);
-		
-		if (myLoader != null){
-			boolean categoryIdWasChanged = myLoader.setCategoryId(app.getCurrentCategoryId());
-			if (categoryIdWasChanged || app.getRefreshTag()!=refreshTag){
-				listAdapter.setData(null);
-				showLoadingScreen();
-				refreshTag = app.getRefreshTag();
-				Log.i(TAG, "wasChanged");
-			}
-			Log.i(TAG, "setCategoryId "+app.getCurrentCategoryId());
-		}
+
+		if (!isNetworkAvailable()) {
+    		showConnectionProblemScreen();
+    		refreshTag = app.getRefreshTag();
+        } else {
+        	if (myLoader != null){
+    			boolean categoryIdWasChanged = myLoader.setCategoryId(app.getCurrentCategoryId());
+    			
+    			if (!categoryIdWasChanged && app.getRefreshTag()!=refreshTag){
+    				myLoader.forceLoad();
+    			}
+    			
+    			if (categoryIdWasChanged || app.getRefreshTag()!=refreshTag){
+    				listAdapter.setData(null);
+    				showLoadingScreen();
+    				refreshTag = app.getRefreshTag();
+    				Log.i(TAG, "wasChanged");
+    			}
+    			Log.i(TAG, "setCategoryId "+app.getCurrentCategoryId());
+    		}
+        }
 		super.onResume();
 	}
 
@@ -168,20 +164,40 @@ public class ListRecipesFragment extends Fragment implements LoaderCallbacks<Arr
 	private void showGridScreen() {
 		Log.i("loader","showGridScreen");
 		progressBar.setVisibility(View.GONE);
+		emptyLayout.setVisibility(View.GONE);
 		connectionProblemLayout.setVisibility(View.GONE);
 		gridView.setVisibility(View.VISIBLE);
 	}
 	private void showLoadingScreen() {
 		Log.i("loader","showLoadingScreen");
 		gridView.setVisibility(View.GONE);
+		emptyLayout.setVisibility(View.GONE);
 		connectionProblemLayout.setVisibility(View.GONE);
 		progressBar.setVisibility(View.VISIBLE);
 	}
-	private void showConnecttionProblemScreen() {
+	private void showConnectionProblemScreen() {
 		Log.i("loader","showConnecttionProblemScreen");
 		gridView.setVisibility(View.GONE);
 		progressBar.setVisibility(View.GONE);
+		emptyLayout.setVisibility(View.GONE);
+		
+		Button refreshButton = (Button) connectionProblemLayout.findViewById(R.id.refreshButton);
+		refreshButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				mCallback.onRefresh();
+			}
+		});
+		
 		connectionProblemLayout.setVisibility(View.VISIBLE);
+	}
+	private void showEmptyScreen() {
+		Log.i("loader","showEmptyScreen");
+		gridView.setVisibility(View.GONE);
+		progressBar.setVisibility(View.GONE);
+		connectionProblemLayout.setVisibility(View.GONE);
+		emptyLayout.setVisibility(View.VISIBLE);
 	}
 
 	@Override
@@ -196,24 +212,21 @@ public class ListRecipesFragment extends Fragment implements LoaderCallbacks<Arr
 
 	@Override
 	public void onLoadFinished(Loader<ArrayList<Recipe>> loader, ArrayList<Recipe> list){
-			for(Recipe recipe:list){
-				Log.i("loaderfragment","item:"+recipe.getName()+","+recipe.getAuthor().getName());
-			}
 			final ArrayList<Recipe> recipesList=list;
 			listAdapter.setData(recipesList);
-	        // The list should now be shown.
-	        if (isResumed()) {
-	        	Log.i("loaderfrag","set list shown");
-	        	showGridScreen();
-	        } else {
-	        	Log.i("loaderfrag","set list shown no animation");
-	        	showGridScreen();
-	        }
+			if (recipesList.isEmpty()){
+				if (!isNetworkAvailable()){
+					showConnectionProblemScreen();
+				} else {
+					showEmptyScreen();
+				}
+			} else {
+				showGridScreen();
+			}
 	}
 
 	@Override
 	public void onLoaderReset(Loader<ArrayList<Recipe>> arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 	
@@ -238,4 +251,5 @@ public class ListRecipesFragment extends Fragment implements LoaderCallbacks<Arr
         }
 	}
 
+	
 }

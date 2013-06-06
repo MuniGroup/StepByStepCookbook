@@ -31,15 +31,17 @@ public class GetIngredientsTask extends AsyncTask<Integer, Void, ArrayList<Assig
 	private Context context;
 	private static final String TAG = "GetIngredientsTask";
 	private final TextView ingr;
+	private final TextView units;
 	private final ProgressBar progressBar;
 	private int recipeId;
 	
 	/** Constructor for only one try to load
 	 * */
-	public GetIngredientsTask(Context context, TextView ingr,ProgressBar progresBar, int recipeID)
+	public GetIngredientsTask(Context context, TextView ingr,TextView units,ProgressBar progresBar, int recipeID)
 	{
 		this.context = context;
 		this.ingr = ingr;
+		this.units = units;
 		this.recipeId = recipeID;
 		this.progressBar = progresBar;
 	}
@@ -71,18 +73,22 @@ public class GetIngredientsTask extends AsyncTask<Integer, Void, ArrayList<Assig
 			Toast.makeText(context, R.string.connectionProblem, Toast.LENGTH_SHORT).show();
 			
 		} else {
+			String unitString = new String();	
 			String ingreString = new String();			
 			for (AssignedIngredient assignedIngredient : result) {
 				if (!ingreString.equals("")) {
 					ingreString = ingreString + '\n';
+					unitString = unitString + '\n';
 				}
-				ingreString = ingreString + assignedIngredient.getAmount() + ' ' +
-						assignedIngredient.getUnit() + ' ' +
-						assignedIngredient.getIngredient().getName(); 				
+				ingreString = ingreString + assignedIngredient.getIngredient().getName(); 
+				unitString = unitString + assignedIngredient.getAmount() + ' ' +
+						assignedIngredient.getUnit(); 
 			}
 			progressBar.setVisibility(View.GONE);
 			ingr.setText(ingreString);
+			units.setText(unitString);
 			ingr.setVisibility(View.VISIBLE);
+			units.setVisibility(View.VISIBLE);
 		}
 		
 	}

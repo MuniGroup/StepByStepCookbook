@@ -5,11 +5,15 @@ import cz.muni.muniGroup.cookbook.entities.Recipe;
 import cz.muni.muniGroup.cookbook.managers.ImageDownloader;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RecipeDetailHeadFragment extends Fragment {
 	
@@ -67,6 +71,17 @@ public class RecipeDetailHeadFragment extends Fragment {
     		icon.setImageBitmap(recipe.getIcon());
     	}
 
+    	Button clr = (Button) getView().findViewById(R.id.downloadButton);
+    	clr.setOnClickListener(new OnClickListener() {
+    		
+    			@Override
+    	        public void onClick(View v) {
+    	        	 Toast toast = Toast.makeText(getActivity(), "Zatím se nevaøí :(", Toast.LENGTH_LONG);
+    	             toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 150);
+    	             toast.show();
+    	        }
+    	});
+    	
 		
     }
 }

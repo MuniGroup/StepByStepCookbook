@@ -1,11 +1,14 @@
 package cz.muni.muniGroup.cookbook.activities;
 
 import cz.muni.muniGroup.cookbook.R;
+import cz.muni.muniGroup.cookbook.entities.Recipe;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class RecipeDetailMoreFragment extends Fragment {
@@ -37,6 +40,17 @@ public class RecipeDetailMoreFragment extends Fragment {
     	Bundle args = getArguments();
     	
     	recipeId = args.getInt("recipeId");
+    	
+    	ProgressBar progressBarRecipeDetail = (ProgressBar) getView().findViewById(R.id.progressBarRecipeDetail);
+    	TextView descr = (TextView) getView().findViewById(R.id.recipeDetail);
+    	
+    	new GetDescriptionTask(getActivity(), descr,progressBarRecipeDetail, recipeId).execute();
+    	
+    	ProgressBar progressBarRecipeIngredients = (ProgressBar) getView().findViewById(R.id.progressBarRecipeIngredients);
+    	TextView ingr = (TextView) getView().findViewById(R.id.recipeIngredients);
+    	
+    	new GetIngredientsTask(getActivity(), ingr, progressBarRecipeIngredients, recipeId).execute();
+    	
     	
     }
 }

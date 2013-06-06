@@ -2,6 +2,7 @@ package cz.muni.muniGroup.cookbook.managers;
 
 import java.util.List;
 
+import cz.muni.muniGroup.cookbook.entities.AssignedIngredient;
 import cz.muni.muniGroup.cookbook.entities.Recipe;
 import cz.muni.muniGroup.cookbook.entities.RecipeCategory;
 import cz.muni.muniGroup.cookbook.exceptions.ConnectivityException;
@@ -33,6 +34,9 @@ public interface RecipeManager {
 	 */
 	Recipe getRecipeById(int id);
 	
+	String getDescription(int id) throws ConnectivityException, CookbookException;
+	
+	List<AssignedIngredient> getIngredients(int id) throws ConnectivityException, CookbookException;
 	/**
 	 * 
 	 * @param categoryId

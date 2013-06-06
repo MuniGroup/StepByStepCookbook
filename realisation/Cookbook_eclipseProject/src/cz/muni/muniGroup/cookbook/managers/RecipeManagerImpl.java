@@ -11,6 +11,8 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
+import cz.muni.muniGroup.cookbook.entities.AssignedIngredient;
+import cz.muni.muniGroup.cookbook.entities.Ingredient;
 import cz.muni.muniGroup.cookbook.entities.Recipe;
 import cz.muni.muniGroup.cookbook.entities.RecipeCategory;
 import cz.muni.muniGroup.cookbook.entities.User;
@@ -47,7 +49,75 @@ public class RecipeManagerImpl implements RecipeManager{
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
+	
+	@Override
+	public String getDescription(int id) throws ConnectivityException, CookbookException {
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("id", String.valueOf(id)));
+		JSONArray jArray = DBWorker.dbQuery(nameValuePairs, "getDescriptionByRecipeId.php");
+		if (jArray == null)
+			throw new NullPointerException("Prazdne JSON pole.");
 
+		try {
+			
+			if (jArray.getJSONObject(0).getBoolean("empty") == true)
+				return new String();
+			
+			if (jArray.getJSONObject(0).getString("error") != null)
+				throw new CookbookException("Chyba v DB dotazu: "+jArray.getJSONObject(0).getString("error"));
+		} catch (JSONException e1) {}
+
+		JSONObject json_data;
+		String description;
+		try {
+			json_data = jArray.getJSONObject(0);
+			description = new String(json_data.getString("description"));
+		} catch (JSONException e) {
+			throw new CookbookException("Chyba pøi parsovaní JSON formátu návratové hodnoty.", e);
+		} 
+		return description;
+	}
+
+	@Override
+	public List<AssignedIngredient> getIngredients(int id) throws ConnectivityException, CookbookException {
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("id", String.valueOf(id)));
+		JSONArray jArray = DBWorker.dbQuery(nameValuePairs, "getIngredientsByRecipeId.php");
+		if (jArray == null)
+			throw new NullPointerException("Prazdne JSON pole.");
+
+		try {
+			
+			if (jArray.getJSONObject(0).getBoolean("empty") == true)
+				return new ArrayList<AssignedIngredient>();
+			
+			if (jArray.getJSONObject(0).getString("error") != null)
+				throw new CookbookException("Chyba v DB dotazu: "+jArray.getJSONObject(0).getString("error"));
+		} catch (JSONException e1) {}
+
+		
+		JSONObject json_data;
+		List<AssignedIngredient> assignedIngredients = new ArrayList<AssignedIngredient>();
+		AssignedIngredient assignedIngredient;
+		Ingredient ingredient;
+		try {
+			for (int i = 0; i < jArray.length(); i++){
+				json_data = jArray.getJSONObject(i);
+				ingredient = new Ingredient();
+				assignedIngredient = new AssignedIngredient();
+				ingredient.setId(json_data.getInt("id"));
+				ingredient.setName(json_data.getString("name"));
+				assignedIngredient.setIngredient(ingredient);
+				assignedIngredient.setUnit(json_data.getString("unit"));
+				assignedIngredient.setAmount(json_data.getInt("amount"));
+				assignedIngredients.add(assignedIngredient);
+			}
+		} catch (JSONException e) {
+			throw new CookbookException("Chyba pøi parsovaní JSON formátu návratové hodnoty.", e);
+		} 
+		return assignedIngredients;
+	}
+	
 	@Override
 	public List<Recipe> getRecipes(int categoryId, int order, int limitFrom, int limit) throws ConnectivityException, CookbookException {
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();

@@ -5,6 +5,7 @@ public class AssignedIngredient {
 	private Ingredient ingredient;
 	private Recipe recipe;
 	private String unit;
+	private Integer amount;
 	private Integer position;
 	
 	
@@ -31,6 +32,12 @@ public class AssignedIngredient {
 	}
 	public void setPosition(Integer position) {
 		this.position = position;
+	}
+	public Integer getAmount() {
+		return amount;
+	}
+	public void setAmount(Integer amount) {
+		this.amount = amount;
 	}
 
 	

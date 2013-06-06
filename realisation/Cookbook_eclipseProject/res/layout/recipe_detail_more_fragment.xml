@@ -22,14 +22,21 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical"
-	        android:padding="12dp">
-	        	
+	        android:padding="12dp">		
+		    	
 		    <TextView
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:textSize="14sp"
 		        android:fontFamily="sans-serif-light"
 		        android:text="@string/label_detail"/>
+		    
+		    <ProgressBar
+        android:id="@+id/progressBarRecipeDetail"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 		    
 		   	<TextView
 		        android:id="@+id/recipeDetail"		        
@@ -38,7 +45,8 @@
 		        android:text="@string/lorem_ipsum"
 		        android:textColor="@color/list_background"
 				android:textSize="12sp"
-		        android:textAppearance="?android:attr/textAppearanceMedium" />
+		        android:textAppearance="?android:attr/textAppearanceMedium"
+		        android:visibility="gone" />
 		</LinearLayout>   
     </RelativeLayout>
     
@@ -70,6 +78,13 @@
 		        android:fontFamily="sans-serif-light"
 		        android:text="@string/label_ingredients"/>
 		    
+		     <ProgressBar
+        android:id="@+id/progressBarRecipeIngredients"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+		    
 		   	<TextView
 		        android:id="@+id/recipeIngredients"		        
 		        android:layout_width="wrap_content"
@@ -77,7 +92,8 @@
 		        android:text="@string/ingredients"
 		        android:textColor="@color/list_background"
 				android:textSize="12sp"
-		        android:textAppearance="?android:attr/textAppearanceMedium" />
+		        android:textAppearance="?android:attr/textAppearanceMedium" 
+		        android:visibility="gone"  />
 		</LinearLayout>   
     </RelativeLayout>    
     

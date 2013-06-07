@@ -36,6 +36,10 @@
 
                 <!-- Light.DarkActionBar specific -->
         <item name="actionBarWidgetTheme">@style/Theme.Cookbookred.Widget</item>
+        
+        		<!-- fix size of Action Bar -->
+        <item name="actionBarSize">48dip</item>
+        <item name="android:actionBarSize">48dip</item> 
     </style>
 
     <style name="ActionBar.Solid.Cookbookred" parent="@style/Widget.Sherlock.Light.ActionBar.Solid.Inverse">
